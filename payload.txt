@@ -1,7 +1,7 @@
 # Dropbox Exfiltrator - zips Documents and uploads the zip file to dropbox
 #Single Stage Rubber Ducky Version Of Hak5 Bash Bunny Payload (Dropbox - Exfiltrator)
 #https://github.com/hak5/bashbunny-payloads/tree/master/payloads/library/exfiltration/dropbox-exfiltrator
-# Demo: Hak5 episode 2505
+# Demo: Hak5 episode 2505 - Edit line 27 to put your dropbox API key
 
  
 DELAY 1000
